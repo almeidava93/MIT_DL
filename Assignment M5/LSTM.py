@@ -162,6 +162,7 @@ scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.95)
 word_rnn, training_curves = train_lstm(lstm, dataloaders, dataset_sizes, 
                                      criterion, optimizer, scheduler, num_epochs=num_epochs)
 
+
 def predict(model, input_sentence):
   input_tensor, _ = train_dataset.create_input_and_target_tensor(input_sentence)
   hidden = model.initHidden(num_layers=2)
