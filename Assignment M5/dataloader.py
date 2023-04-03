@@ -31,12 +31,15 @@ class EnglishSpanishDataset(Dataset):
         return input_tensor.to(torch.int64), target_tensor.to(torch.int64)
 
     def create_target_tensor(self, input_tensor):
-        tensor = torch.zeros(len(input_tensor), 1, self.vocab_size)
-        for idx in range(1, len(input_tensor)):
-            word_ref = input_tensor[idx]
-            tensor[idx-1][0][word_ref] = 1
-        tensor[len(input_tensor)-1][0][self.get_word_index("<EOS>")] = 1 # EOS
-        return tensor
+        # tensor = torch.zeros(len(input_tensor), 1, self.vocab_size)
+        # for idx in range(1, len(input_tensor)):
+        #     word_ref = input_tensor[idx]
+        #     tensor[idx-1][0][word_ref] = 1
+        # tensor[len(input_tensor)-1][0][self.get_word_index("<EOS>")] = 1 # EOS
+        target_tensor = torch.zeros(len(input_tensor))
+        target_tensor[:len(input_tensor)-1] = torch.clone(input_tensor[1:])
+        target_tensor[-1] = self.get_word_index("<EOS>")
+        return target_tensor
     
     def tensor_to_sentence(self, tensor: torch.Tensor) -> str:
         sentence = ""
